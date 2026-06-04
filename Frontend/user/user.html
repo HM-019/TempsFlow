@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TempsFlow — Employé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js');
+    }
+  </script>
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <button class="hamburger" id="hamburger-btn">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="logo-mark" style="width:28px;height:28px;font-size:14px;border-radius:8px;">T</span>
+  <span class="logo-text" style="font-size:16px;">TempsFlow</span>
+</div>
+
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div id="app" class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-mark">T</span>
+      <span class="logo-text">TempsFlow</span>
+    </div>
+
+    <!-- Employee nav -->
+    <nav class="sidebar-nav" id="emp-nav">
+      <a href="#" class="nav-item active" data-page="emp-dashboard">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Tableau de bord
+      </a>
+      <a href="#" class="nav-item" data-page="emp-history">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Historique
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">JD</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Jean Dupont</div>
+          <div class="user-role" id="sidebar-role">Employé</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn" title="Déconnexion">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ===== EMPLOYEE: DASHBOARD ===== -->
+    <section class="page active" id="page-emp-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 id="welcome-msg">Bonjour 👋</h1>
+          <p class="page-sub" id="today-date">Chargement...</p>
+        </div>
+      </div>
+
+      <div class="cards-row">
+        <div class="card stat-card">
+          <div class="stat-label">Aujourd'hui</div>
+          <div class="stat-value" id="today-hours">0h 00m</div>
+          <div class="stat-hint">heures travaillées</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Cette semaine</div>
+          <div class="stat-value" id="week-hours">—</div>
+          <div class="stat-hint">lun. — dim.</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Ce mois</div>
+          <div class="stat-value" id="month-hours">—</div>
+          <div class="stat-hint" id="month-days-hint">jours travaillés</div>
+        </div>
+      </div>
+
+      <!-- Salary cards -->
+      <div class="cards-row" id="salary-row">
+        <div class="card stat-card">
+          <div class="stat-label">Salaire contractuel</div>
+          <div class="stat-value" id="contract-salary">0.00€</div>
+          <div class="stat-hint" id="contract-salary-hint">sur 0.00€</div>
+          <div style="margin-top:.75rem">
+            <div style="height:6px;background:var(--bg);border-radius:99px;overflow:hidden;">
+              <div id="contract-progress-bar" style="height:100%;width:0%;background:var(--blue);border-radius:99px;transition:width .5s ease;"></div>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:.3rem" id="contract-hours-hint">0h / 0h contractuelles</div>
+          </div>
+        </div>
+        <div class="card stat-card" id="extra-salary-card" style="display:none;">
+          <div class="stat-label">Heures supplémentaires</div>
+          <div class="stat-value" style="color:var(--green)" id="extra-salary">0.00€</div>
+          <div class="stat-hint" id="extra-salary-hint">0h sup. × 8€/h</div>
+        </div>
+      </div>
+
+      <div class="card clock-card">
+        <div class="clock-display">
+          <div class="clock-time" id="live-clock">00:00:00</div>
+          <div class="clock-timer" id="session-timer">Session : 00:00:00</div>
+        </div>
+        <div class="clock-actions">
+          <button class="btn-clock btn-in" id="clock-in-btn">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Pointer l'arrivée
+          </button>
+          <button class="btn-clock btn-out" id="clock-out-btn" disabled>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Pointer le départ
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Pointages du jour</h2>
+        </div>
+        <table class="data-table" id="today-shifts-table">
+          <thead>
+            <tr><th>Arrivée</th><th>Départ</th><th>Durée</th><th>Action</th></tr>
+          </thead>
+          <tbody id="today-shifts-body">
+            <tr><td colspan="4" class="empty-row">Aucun pointage aujourd'hui</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== EMPLOYEE: HISTORY ===== -->
+    <section class="page hidden" id="page-emp-history">
+      <div class="page-header">
+        <div>
+          <h1>Historique</h1>
+          <p class="page-sub">Vos pointages du mois</p>
+        </div>
+        <select class="select-month" id="history-month-select">
+          <option value="01">Janvier</option>
+          <option value="02">Février</option>
+          <option value="03">Mars</option>
+          <option value="04">Avril</option>
+          <option value="05">Mai</option>
+          <option value="06">Juin</option>
+          <option value="07">Juillet</option>
+          <option value="08">Août</option>
+          <option value="09">Septembre</option>
+          <option value="10">Octobre</option>
+          <option value="11">Novembre</option>
+          <option value="12">Décembre</option>
+        </select>
+      </div>
+      <!-- Add a missed day -->
+      <div class="card correction-form-card" style="margin-bottom:1.25rem">
+        <div class="card-header"><h2>Ajouter un jour manquant</h2></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="manual-date" />
+          </div>
+          <div class="form-group">
+            <label>Heure d'arrivée</label>
+            <input type="time" id="manual-clock-in" />
+          </div>
+          <div class="form-group">
+            <label>Heure de départ</label>
+            <input type="time" id="manual-clock-out" />
+          </div>
+        </div>
+        <button class="btn-primary" id="add-manual-shift-btn">Ajouter</button>
+      </div>
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr><th>Date</th><th>Arrivée</th><th>Départ</th><th>Total</th></tr>
+          </thead>
+          <tbody id="history-body">
+            <tr><td colspan="4" class="empty-row">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== EMPLOYEE: CORRECTION ===== -->
+
+    <!-- Edit shift modal -->
+    <div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;">
+      <div class="card" style="width:100%;max-width:400px;margin:1rem;">
+        <div class="card-header">
+          <h2>Modifier le pointage</h2>
+          <button class="btn-secondary" onclick="closeEditModal()">Annuler</button>
+        </div>
+        <div class="form-group">
+          <label>Heure d'arrivée</label>
+          <input type="time" id="edit-clock-in" />
+        </div>
+        <div class="form-group" style="margin-top:.75rem">
+          <label>Heure de départ</label>
+          <input type="time" id="edit-clock-out" />
+        </div>
+        <button class="btn-primary" style="margin-top:1rem;width:100%" id="save-edit-btn">Enregistrer</button>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="user.js"></script>
+</body>
+</html>

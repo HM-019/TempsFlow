@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TempsFlow — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js');
+    }
+  </script>
+</head>
+<body>
+
+<div id="login-screen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="logo-mark">T</span>
+      <span class="logo-text">TempsFlow</span>
+    </div>
+    <p class="login-subtitle">Gestion du temps de travail</p>
+
+
+    <div class="form-group">
+      <label>Identifiant</label>
+      <input type="text" id="login-username" placeholder="nom.prenom" />
+    </div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="login-password" placeholder="••••••••" />
+    </div>
+    <button class="btn-primary full-width" id="login-btn">Se connecter</button>
+    <p class="login-hint">Connectez-vous avec vos identifiants</p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="login.js"></script>
+</body>
+</html>
