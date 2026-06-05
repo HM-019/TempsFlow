@@ -1,5 +1,4 @@
-const API = 'http://localhost:3000/api';
-
+const API = 'https://tempsflow-api.onrender.com/api';
 /* ===========================
    STATE
 =========================== */
