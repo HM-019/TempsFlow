@@ -16,27 +16,7 @@ services:
   # ----------------------------------------------------------
   #  DATABASE — MySQL 8.0
   # ----------------------------------------------------------
-  database:
-    build:
-      context: ./Database
-    container_name: tempsflow_db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: test
-      MYSQL_DATABASE: tempsflow
-      TZ: UTC
-    command: --default-time-zone='+00:00'
-    ports:
-      - "3307:3306"       # expose to host for tools like DBeaver/MySQL Workbench
-    volumes:
-      - db_data:/var/lib/mysql   # persist data across restarts
-    networks:
-      - tempsflow_network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpassword"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
 
   # ----------------------------------------------------------
   #  BACKEND — Node.js + Express API
@@ -47,7 +27,8 @@ services:
     container_name: tempsflow_api
     restart: unless-stopped
     environment:
-      MYSQL_HOST: database
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -56,9 +37,6 @@ services:
       FRONTEND_URL: ${FRONTEND_URL}
     ports:
       - "3000:3000"
-    depends_on:
-      database:
-        condition: service_healthy   # wait for DB to be ready
     networks:
       - tempsflow_network
 
