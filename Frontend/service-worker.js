@@ -1,12 +1,12 @@
 const CACHE_NAME = 'tempsflow-v1';
 const ASSETS = [
-  '/login/login.html',
-  '/login/login.js',
-  '/user/user.html',
-  '/user/user.js',
-  '/admin/admin.html',
-  '/admin/admin.js',
-  '/style.css'
+  '/TempsFlow/Frontend/login/login.html',
+  '/TempsFlow/Frontend/login/login.js',
+  '/TempsFlow/Frontend/user/user.html',
+  '/TempsFlow/Frontend/user/user.js',
+  '/TempsFlow/Frontend/admin/admin.html',
+  '/TempsFlow/Frontend/admin/admin.js',
+  '/TempsFlow/Frontend/style.css'
 ];
 
 self.addEventListener('install', e => {
