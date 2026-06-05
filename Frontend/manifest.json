@@ -2,6 +2,7 @@
   "name": "TempsFlow",
   "short_name": "TempsFlow",
   "start_url": "/TempsFlow/Frontend/login/login.html",
+  "scope": "/TempsFlow/Frontend/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
