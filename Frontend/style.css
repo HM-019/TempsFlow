@@ -808,20 +808,26 @@ svg {
     border-radius: 2px;
     transition: all .2s;
   }
-  /* Hide less important table columns on mobile */
-  .data-table th:nth-child(3),
-  .data-table td:nth-child(3),
-  .data-table th:nth-child(5),
-  .data-table td:nth-child(5) {
+  /* Only hide columns on the admin employees dashboard table */
+  #admin-emp-body-dash th:nth-child(3),
+  #admin-emp-body-dash td:nth-child(3) {
     display: none;
+  }
+
+  #history-body tr td,
+  #history-body tr th,
+  #detail-shifts-body tr td,
+  #detail-shifts-body tr th {
+    display: table-cell !important;
   }
 
   .card {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .data-table {
-    min-width: unset;
+    min-width: 500px;
     font-size: 12px;
   }
 
@@ -829,6 +835,7 @@ svg {
   .data-table td {
     padding: .6rem .5rem;
   }
+
 }
 
 
