@@ -12,7 +12,6 @@ TempsFlow is a full-stack employee time tracking and management application. It 
 - [Tech Stack](#tech-stack)
 - [Project Architecture](#project-architecture)
 - [Project Structure](#project-structure)
-- [Getting Started Locally](#getting-started-locally)
 - [Installing as a PWA](#installing-as-a-pwa)
 - [Security Features](#security-features)
 - [API Overview](#api-overview)
